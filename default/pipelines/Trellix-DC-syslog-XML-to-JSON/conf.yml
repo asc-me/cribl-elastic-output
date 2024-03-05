@@ -1,0 +1,58 @@
+output: default
+streamtags: []
+groups: {}
+asyncFuncTimeout: 1000
+functions:
+  - id: comment
+    filter: "true"
+    disabled: null
+    conf:
+      comment: this pipeline is designed to translate Trellix XML over syslog events
+        into a JSON string for Elastic.
+  - id: eval
+    filter: "true"
+    disabled: null
+    conf:
+      add:
+        - disabled: false
+          name: _raw
+          value: _raw.replace(/\n\s+/gm,'\n')
+        - disabled: false
+          name: _raw
+          value: _raw.replace(/\t/gm,'')
+        - disabled: false
+          name: _raw
+          value: _raw.replace(/, /gm,',')
+        - disabled: false
+          name: _raw
+          value: _raw.replace(/\>[^\<]+\n/gm,'>\n')
+        - disabled: false
+          name: _raw
+          value: _raw.replace(/\n\<\d+\>[^\<]+/gm,'')
+        - disabled: false
+          name: _raw
+          value: C.Text.parseWinEvent(_raw,[])
+    description: clean the XML and parse it
+  - id: serialize
+    filter: "true"
+    disabled: null
+    conf:
+      type: json
+      dstField: message
+      fields: []
+      srcField: _raw
+    description: convert parsed XML event into JSON string in the message field
+  - id: eval
+    filter: "true"
+    disabled: null
+    conf:
+      add:
+        - disabled: false
+          name: "'@timestamp'"
+          value: _time
+      remove:
+        - _raw
+        - _time
+    description: move _time to @timestamp
+description: converts trellix endpoint security syslog/xml events into JSON for
+  easier reading by Elastic

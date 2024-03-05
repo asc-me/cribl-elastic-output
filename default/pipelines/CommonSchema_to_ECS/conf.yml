@@ -1,0 +1,79 @@
+output: default
+streamtags: []
+groups: {}
+asyncFuncTimeout: 1000
+functions:
+  - id: comment
+    filter: "true"
+    disabled: null
+    conf:
+      comment: This pipeline requires no changes to work properly, if the "__schema"
+        field exists, we parse it and remove everything else from the event.
+  - id: comment
+    filter: "true"
+    disabled: null
+    conf:
+      comment: >-
+        DO NOT USE THIS PACK IF:
+
+        - you are sending data to Elastic and want to use any pre-built content out of the box, including Elastic Security.
+
+
+        Why:
+
+        - Elastic uses its parsers to not only extract fields but also to build the data schema to enable reading from this data. this means that while the data looks right in Elastic, it's not showing up in dashboards or on analytics.
+
+
+        What to do instead:
+
+        - Send data to Elastic datastreams without changing the shape of your data first. we recommend you use the Map_events_to_Datastreams pipeline
+  - id: eval
+    filter: __schema.event.original == null
+    disabled: false
+    conf:
+      remove:
+        - "*"
+      add:
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _time
+          value: Date.now()
+        - disabled: false
+          name: "'@timestamp'"
+          value: _time
+      keep:
+        - _index
+        - _time
+        - cribl*
+        - message
+    description: Remove all keys
+  - id: eval
+    filter: __schema.event.original != null
+    disabled: false
+    conf:
+      remove:
+        - "*"
+      keep:
+        - _index
+        - _time
+        - cribl*
+      add:
+        - disabled: false
+          name: _time
+          value: Date.now()
+        - disabled: false
+          value: _time
+          name: "'@timestamp'"
+    description: Remove all keys
+  - id: serde
+    filter: __schema
+    disabled: false
+    conf:
+      mode: extract
+      type: json
+      srcField: __schema
+      remove: []
+    description: extract fields mapped to __schema field
+description: if CCS is present on events, convert to top level ECS fields

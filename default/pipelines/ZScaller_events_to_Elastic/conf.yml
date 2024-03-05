@@ -1,0 +1,321 @@
+output: default
+streamtags: []
+groups:
+  kjBux2:
+    name: NG Firewall logs to datastreams
+    description: "pulled from: https://docs.elastic.co/integrations/panw"
+    index: 2
+  2o38KQ:
+    name: Cortex logs to datastreams
+    description: "pulled from: https://docs.elastic.co/integrations/panw_cortex_xdr"
+    index: 3
+asyncFuncTimeout: 1000
+functions:
+  - id: comment
+    filter: "true"
+    disabled: null
+    conf:
+      comment: >-
+        How to Use This Pipeline:
+
+        this pipeline is designed to work as a reference for you to map your events into the datastreams you have enabled in Elastic. best practice would be to clone this pipeline for each source dataset you plan to map to Elastic datastreams.
+
+
+        if you feel like contributing to the development of this pack and are willing to share whatever pipelines you create and sample data please reach out on the Cribl Community Slack, or check the contributing guide in the README.
+  - id: comment
+    filter: "true"
+    disabled: null
+    conf:
+      comment: "The following is a collection of example mappings of datatypes to
+        Elastic data streams. for more info on how data streams work in Elastic
+        check out here:
+        https://www.elastic.co/blog/an-introduction-to-the-elastic-data-stream-\
+        naming-scheme"
+  - id: eval
+    filter: _raw.indexOf(",AUTHENTICATION,") > -1
+    disabled: null
+    conf:
+      add:
+        - disabled: true
+          name: __index
+          value: '"logs-panw.panos-authentication"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"pan-ngfw-auth"'
+      remove:
+        - _raw
+    description: Mappings for PAN:Authentication
+    groupId: kjBux2
+  - id: eval
+    filter: _raw.indexOf(",CORRELATION,") > -1
+    disabled: null
+    conf:
+      add:
+        - disabled: true
+          name: __index
+          value: '"logs-panw.panos-correlation"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"pan-ngfw-correlation"'
+      remove:
+        - _raw
+    description: Mappings for PAN:Correlation
+    groupId: kjBux2
+  - id: eval
+    filter: _raw.indexOf(",CONFIG,") > -1
+    disabled: null
+    conf:
+      add:
+        - disabled: true
+          name: __index
+          value: '"logs-panw.panos-config"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"pan-ngfw-config"'
+      remove:
+        - _raw
+    description: Mappings for PAN:Config
+    groupId: kjBux2
+  - id: eval
+    filter: _raw.indexOf(",DECRYPTION,") > -1
+    disabled: null
+    conf:
+      add:
+        - disabled: true
+          name: __index
+          value: '"logs-panw.panos-decryption"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"pan-ngfw-decrypt"'
+      remove:
+        - _raw
+    description: Mappings for PAN:Decryption
+    groupId: kjBux2
+  - id: eval
+    filter: _raw.indexOf(",GLOBALPROTECT,") > -1
+    disabled: null
+    conf:
+      add:
+        - disabled: true
+          name: __index
+          value: '"logs-panw.panos-globalprotect"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"pan-ngfw-globalprotect"'
+      remove:
+        - _raw
+    description: Mappings for PAN:GlobalProtect
+    groupId: kjBux2
+  - id: eval
+    filter: _raw.indexOf(",GTP,") > -1
+    disabled: null
+    conf:
+      add:
+        - disabled: true
+          name: __index
+          value: '"logs-panw.panos-gtp"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"pan-ngfw-gtp"'
+      remove:
+        - _raw
+    description: Mappings for PAN:GTP
+    groupId: kjBux2
+  - id: eval
+    filter: _raw.indexOf(",HIPMATCH,") > -1
+    disabled: null
+    conf:
+      add:
+        - disabled: true
+          name: __index
+          value: '"logs-panw.panos-hipmatch"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"pan-ngfw-hipmatch"'
+      remove:
+        - _raw
+    description: Mappings for PAN:Hipmatch
+    groupId: kjBux2
+  - id: eval
+    filter: _raw.indexOf(",IPTAG,") > -1
+    disabled: null
+    conf:
+      add:
+        - disabled: false
+          name: __index
+          value: '"logs-panw.panos-ip_tag"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"pan-ngfw-iptag"'
+      remove:
+        - _raw
+    description: Mappings for PAN:IPTAG
+    groupId: kjBux2
+  - id: eval
+    filter: _raw.indexOf(",SCTP,") > -1
+    disabled: null
+    conf:
+      add:
+        - disabled: true
+          name: __index
+          value: '"logs-panw.panos-sctp"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"pan-ngfw-sctp"'
+      remove:
+        - _raw
+    description: Mappings for PAN:System
+    groupId: kjBux2
+  - id: eval
+    filter: _raw.indexOf(",SYSTEM,") > -1
+    disabled: null
+    conf:
+      add:
+        - disabled: true
+          name: __index
+          value: '"logs-panw.panos-system"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"pan-ngfw-system"'
+      remove:
+        - _raw
+    description: Mappings for PAN:System
+    groupId: kjBux2
+  - id: eval
+    filter: _raw.indexOf(",TRAFFIC,") > -1
+    disabled: null
+    conf:
+      add:
+        - disabled: true
+          name: __index
+          value: '"logs-panw.panos-traffic"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"pan-ngfw-traffic"'
+      remove:
+        - _raw
+    groupId: kjBux2
+    description: Mappings for PAN:Traffic
+  - id: eval
+    filter: _raw.indexOf(",THREAT,") > -1
+    disabled: null
+    conf:
+      add:
+        - disabled: true
+          name: __index
+          value: '"logs-panw.panos-threat"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"pan-ngfw-threat"'
+      remove:
+        - _raw
+    groupId: kjBux2
+    description: Mappings for PAN:Threat
+  - id: eval
+    filter: _raw.indexOf(",START,") > -1
+    disabled: null
+    conf:
+      add:
+        - disabled: true
+          name: __index
+          value: '"logs-panw.panos-tunnel_inspection"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"pan-ngfw-tunnel"'
+      remove:
+        - _raw
+    description: Mappings for PAN:Tunnel
+    groupId: kjBux2
+  - id: eval
+    filter: _raw.indexOf(",USERID,") > -1
+    disabled: null
+    conf:
+      add:
+        - disabled: true
+          name: __index
+          value: '"logs-panw.panos-userid"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"pan-ngfw-userid"'
+      remove:
+        - _raw
+    description: Mappings for PAN:UserId
+    groupId: kjBux2
+  - id: eval
+    filter: source=='XDR Agent' | source=='XDR Analytics' | source=='PAN NGFW'
+    disabled: null
+    conf:
+      add:
+        - disabled: true
+          name: __index
+          value: '"logs-panw_cortex_xdr.alerts"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"pan-cortex-alerts"'
+      remove:
+        - _raw
+    description: Mappings for PAN:Cortex-Alerts
+    groupId: 2o38KQ
+  - id: eval
+    filter: _raw.indexOf("incident_id") > -1 | _raw.indexOf("incidents") > -1
+    disabled: null
+    conf:
+      add:
+        - disabled: true
+          name: __index
+          value: '"logs-panw_cortex_xdr.incidents"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"pan-cortex-incidents"'
+      remove:
+        - _raw
+    description: Mappings for PAN:Cortex-Incidents
+    groupId: 2o38KQ
