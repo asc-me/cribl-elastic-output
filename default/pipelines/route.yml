@@ -1,0 +1,99 @@
+id: default
+groups:
+  asmhpO:
+    name: Prep data for Elastic integrations
+    description: assigns a unique identifier to each event type to prep for the
+      Cribl integration in Elastic, optionally can route directly to installed
+      elastic datastreams
+    index: 1
+  pqsq3A:
+    name: Prep data for Elastic indexing
+    description: for datasets without an affiliated datastream available in Elastic,
+      uses these pipelines to get that data ready for ingest by Elastic.
+    index: 2
+comments:
+  - id: etFO3F
+    comment: "***PLEASE UPDATE: the filters for these routes need to be validated to
+      work against your own inputs/data"
+    index: 0
+routes:
+  - id: Oa8t3j
+    name: Assign AWS datatypes to Elastic datastreams
+    final: true
+    disabled: false
+    pipeline: AWS_events_to_datastreams
+    description: add a new eval for any data set that you want Elastic
+      pipelines/data streams to map ECS schema for
+    clones: []
+    enableOutputExpression: false
+    outputExpression: null
+    filter: __inputId.startsWith('aws')
+    output: default
+    groupId: asmhpO
+  - id: g1FoxQ
+    name: Assign PAN Firewall & Cortex datatypes to Elastic datastreams
+    final: true
+    disabled: false
+    pipeline: PAN_events_to_datastreams
+    description: evals for mapping NGFW and CORTEX events into their corresponding
+      Elastic datastream
+    clones: []
+    enableOutputExpression: false
+    outputExpression: null
+    filter: "__inputId.endsWith('PAN') | __inputId.endsWith('CORTEX') |
+      __inputId.endsWith('palo') "
+    output: default
+    groupId: asmhpO
+  - id: g2oQ5g
+    name: Assign Trellix EDR & EPO datatypes to Elastic datastreams
+    final: true
+    disabled: false
+    pipeline: Trellix_events_to_datastreams
+    description: evals for mapping EPO and EDR events into their corresponding
+      Elastic datastream
+    clones: []
+    enableOutputExpression: false
+    outputExpression: null
+    filter: "__inputId.endsWith('trellix') &&
+      !_raw.match(/(\\<EPOEvent\\>)|(\\<DLPAGENT)/) "
+    output: default
+    groupId: asmhpO
+  - id: nDLAfq
+    name: Assign ZScaler ZIA & ZPA datatypes to Elastic datastreams
+    final: true
+    disabled: false
+    pipeline: ZScaler_events_to_datastreams
+    description: evals for mapping ZIA and ZPA events into their corresponding
+      Elastic datastream
+    clones: []
+    enableOutputExpression: false
+    outputExpression: null
+    filter: __inputId.endsWith('ZIA') | __inputId.endsWith('ZPA') |
+      __inputId.endsWith('zscaler') | sourcetype.match(zscalernss)
+    output: default
+    groupId: asmhpO
+  - id: 1GkIkD
+    name: "Map Trellix EPS "
+    final: true
+    disabled: false
+    pipeline: Trellix-DC-syslog-XML-to-JSON
+    description: "converts Trellix on-prem EPO XML events into JSON "
+    clones: []
+    enableOutputExpression: false
+    outputExpression: null
+    filter: "__inputId.endsWith('trellix') &&
+      _raw.match(/(\\<EPOEvent\\>)|(\\<DLPAGENT)/) "
+    output: default
+    groupId: pqsq3A
+  - id: DHf0cr
+    name: Basic formatting for indexing
+    final: true
+    disabled: false
+    pipeline: Elastic_Event_Formating
+    description: send data with minimal formatting for Elastic
+    clones: []
+    enableOutputExpression: false
+    outputExpression: null
+    filter: "true"
+    output: default
+    groupId: pqsq3A

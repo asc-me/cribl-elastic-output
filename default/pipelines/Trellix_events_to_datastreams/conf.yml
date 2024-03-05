@@ -1,0 +1,156 @@
+output: default
+streamtags: []
+groups:
+  kjBux2:
+    name: EPO logs to datastreams
+    description: "pulled from: https://docs.elastic.co/integrations/zscaler_zia"
+    index: 3
+  2o38KQ:
+    name: EDR logs to datastreams
+    description: "pulled from: https://docs.elastic.co/integrations/zscaler_zpa"
+    index: 4
+asyncFuncTimeout: 1000
+functions:
+  - id: comment
+    filter: "true"
+    disabled: null
+    conf:
+      comment: >-
+        How to Use This Pipeline:
+
+        this pipeline is designed to work as a reference for you to map your events into the datastreams you have enabled in Elastic. best practice would be to clone this pipeline for each source dataset you plan to map to Elastic datastreams.
+
+
+        if you feel like contributing to the development of this pack and are willing to share whatever pipelines you create and sample data please reach out on the Cribl Community Slack, or check the contributing guide in the README.
+  - id: comment
+    filter: "true"
+    disabled: null
+    conf:
+      comment: "The following is a collection of example mappings of datatypes to
+        Elastic data streams. for more info on how data streams work in Elastic
+        check out here:
+        https://www.elastic.co/blog/an-introduction-to-the-elastic-data-stream-\
+        naming-scheme"
+  - id: comment
+    filter: "true"
+    disabled: null
+    conf:
+      comment: >-
+        What is happening?
+
+        we are mapping three fields to be used for sending data to Elastic.
+
+
+        "__index": this is a Cribl control field, setting this field for Elastic destinations will force an overwrite for the destination index or datastream. if you use this field map sure you have this index or datastream enabled in Elastic.  (this is turned off by default as it's not always clear what the exact name of a datastream is, we recommend using the Cribl integration in Elastic and routing events using the "_dataId" to map to the datastream you want.)
+
+
+        "message": Elastic expects the raw data to be inside the message field, so we remap _raw to message.
+
+
+        "_dataId": this is a control field used in the Elastic integration for Cribl, setting this field will help Elastic map events to the appropriate data stream, this does not need to be the actual datastream name but at least a unique identifier to help map, this could be something like (pan-ngfw-threat).
+  - id: eval
+    filter: _raw.match(/\"id\":\"[\w\d\(\)\\\/]+\",\"type\":\"devices\",/) |
+      _raw.indexOf("https://api.manage.trellix.com/epo/v2/devices") > 1
+    disabled: null
+    conf:
+      add:
+        - disabled: true
+          name: __index
+          value: '"logs-trellix_epo_cloud.device"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"trellix-epo-device"'
+      remove:
+        - "*"
+      keep:
+        - message
+        - "@timestamp"
+        - _dataId
+        - __*
+        - cribl_*
+    description: Mappings for EPO:Device
+    groupId: kjBux2
+    final: true
+  - id: eval
+    filter: _raw.indexOf("MVEvents") > 1 |
+      _raw.indexOf("https://api.manage.trellix.com/epo/v2/mvevents") > 1
+    disabled: null
+    conf:
+      add:
+        - disabled: true
+          name: __index
+          value: '"logs-trellix_epo_cloud.event"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"trellix-epo-event"'
+      remove:
+        - "*"
+      keep:
+        - message
+        - "@timestamp"
+        - _dataId
+        - __*
+        - cribl_*
+    description: Mappings for EPO:Event
+    groupId: kjBux2
+    final: true
+  - id: eval
+    filter: _raw.match(/\"id\":\"[\w\d\(\)\\\/]+\",\"type\":\"groups\",/) |
+      _raw.indexOf("https://api.manage.trellix.com/epo/v2/groups") > 1
+    disabled: null
+    conf:
+      add:
+        - disabled: true
+          name: __index
+          value: '"logs-trellix_epo_cloud.group"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"trellix-epo-group"'
+        - disabled: false
+          name: "'@timestamp'"
+          value: _time
+      remove:
+        - "*"
+      keep:
+        - message
+        - "@timestamp"
+        - _dataId
+        - __*
+        - cribl_*
+    description: Mappings for EPO:Group
+    groupId: kjBux2
+    final: true
+  - id: eval
+    filter: _raw.match(/\"_ver\":[\d]+,\"_serverId\":\"[\d\w\-]+\",\"_eventType\":\"[\w\_\-\s]+\",\"accessType\":\"[\w\_\-]+\",/)
+    disabled: null
+    conf:
+      add:
+        - disabled: true
+          name: __index
+          value: '"logs-trellix_edr_cloud.event"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"trellix-edr-event"'
+      remove:
+        - "*"
+      keep:
+        - message
+        - "@timestamp"
+        - _dataId
+        - __*
+        - cribl_*
+    description: Mappings for EDR:Event
+    groupId: 2o38KQ
+    final: true

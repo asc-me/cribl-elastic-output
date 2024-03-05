@@ -1,0 +1,34 @@
+output: default
+streamtags: []
+groups: {}
+asyncFuncTimeout: 1000
+functions:
+  - id: comment
+    filter: "true"
+    disabled: null
+    conf:
+      comment: "This pipeline is a simple formater for all events being sent to
+        Elastic. you should only use this pipeline if you do not have an Elastic
+        datastream to match your dataset. "
+  - id: eval
+    filter: "true"
+    disabled: null
+    conf:
+      add:
+        - disabled: false
+          name: __index
+          value: _index
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: "'@timestamp'"
+          value: _time
+      remove:
+        - source
+        - sourcetype
+        - _index
+        - _raw
+    description: move the '_raw' data to 'message' field and assign '_index' to
+      '__index', then remove fields
+description: this pipeline is designed to prep any event to be read by Elastic destinations

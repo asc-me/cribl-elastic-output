@@ -1,0 +1,236 @@
+20MiBy:
+  sampleName: CL_Conn_300_no_schema.log
+  created: 1697557090740
+  isPackOnly: true
+  size: 2305
+  numEvents: 1
+6Jh8Dp:
+  sampleName: CL_Conn_300_with__schema_and_time_only
+  created: 1698948501103
+  size: 1174
+  numEvents: 1
+jhKF7Y:
+  sampleName: CL_Conn_300_with__schema_and_other_fields
+  created: 1698948768645
+  size: 3505
+  numEvents: 1
+7qCZcY:
+  sampleName: AWS-WAF.log
+  created: 1707946872979
+  size: 7997
+  numEvents: 4
+ZZYvkX:
+  sampleName: AWS-S3_Access.log
+  created: 1707947503192
+  size: 4880
+  numEvents: 7
+icAv12:
+  sampleName: AWS-Route53_public.log
+  created: 1707947971713
+  size: 1059
+  numEvents: 6
+vEoNMY:
+  sampleName: AWS-Route53_resolver.log
+  created: 1707948120107
+  size: 30849
+  numEvents: 34
+6egvrV:
+  sampleName: AWS-ELB-ALB.log
+  created: 1707948224211
+  size: 1070
+  numEvents: 2
+7AS30k:
+  sampleName: AWS-EC2.log
+  created: 1707948261808
+  size: 1168
+  numEvents: 6
+A8a4sS:
+  sampleName: AWS-Cloudfront.log
+  created: 1708010809755
+  size: 5256
+  numEvents: 11
+1afmRf:
+  sampleName: AWS-Cloudtrail.log
+  created: 1708534389372
+  size: 39427
+  numEvents: 10
+Gc9Ytj:
+  sampleName: AWS-Firewall.log
+  created: 1708545008975
+  size: 13121
+  numEvents: 10
+y5JLew:
+  sampleName: AWS-VPCFlow-v5.log
+  created: 1708545330855
+  size: 1611
+  numEvents: 5
+MFQVbo:
+  sampleName: AWS-Route53-resolver.log
+  created: 1708545979628
+  size: 30849
+  numEvents: 34
+Xry9zz:
+  sampleName: AWS-Route53-public.log
+  created: 1708547707065
+  size: 1059
+  numEvents: 6
+QRBeua:
+  sampleName: PAN-USERID.log
+  created: 1708548435500
+  size: 4724
+  numEvents: 16
+ydNX4i:
+  sampleName: PAN-Cortex-Alerts.log
+  created: 1708549894666
+  size: 68790
+  numEvents: 7
+mYiYlJ:
+  sampleName: PAN-Cortex-Incidents.log
+  created: 1708550022677
+  size: 15405
+  numEvents: 6
+ZiUL6G:
+  sampleName: PAN-IPTAG.log
+  created: 1708551433365
+  size: 1521
+  numEvents: 5
+OhkiGm:
+  sampleName: PAN-SCTP.log
+  created: 1708551480439
+  size: 2546
+  numEvents: 5
+lT2kXa:
+  sampleName: PAN:System.log
+  created: 1708551589919
+  size: 1642
+  numEvents: 5
+SrXKRS:
+  sampleName: PAN-Threat.log
+  created: 1708552009778
+  size: 6098
+  numEvents: 10
+dDplDW:
+  sampleName: PAN-Traffic.log
+  created: 1708552058028
+  size: 5354
+  numEvents: 10
+KFnwhZ:
+  sampleName: PAN-Tunnel.log
+  created: 1708552128602
+  size: 2831
+  numEvents: 5
+wpRsZl:
+  sampleName: PAN-Decrypt.log
+  created: 1708552215227
+  size: 5287
+  numEvents: 6
+IQPZhn:
+  sampleName: PAN-Correlation.log
+  created: 1708552247289
+  size: 1226
+  numEvents: 5
+SfR2wh:
+  sampleName: PAN-Config.log
+  created: 1708552273704
+  size: 1853
+  numEvents: 5
+QrzXum:
+  sampleName: PAN-Auth.log
+  created: 1708552291768
+  size: 3271
+  numEvents: 5
+7XodTJ:
+  sampleName: ZIA-Alerts.log
+  created: 1708705609030
+  size: 1181
+  numEvents: 6
+mwPStg:
+  sampleName: ZIA-DNS-HTTP.log
+  created: 1708705708226
+  size: 6425
+  numEvents: 6
+ibMuwI:
+  sampleName: ZIA-DNS.log
+  created: 1708705746576
+  size: 7279
+  numEvents: 6
+IqgaF1:
+  sampleName: ZIA-Firewall-HTTP.log
+  created: 1708705797380
+  size: 8081
+  numEvents: 5
+M2VpTj:
+  sampleName: ZIA-Firewall.log
+  created: 1708705837405
+  size: 9805
+  numEvents: 6
+9Eekne:
+  sampleName: ZIA-Tunnel-HTTP.log
+  created: 1708705956158
+  size: 3651
+  numEvents: 5
+IIlZRJ:
+  sampleName: ZIA-Tunnel.log
+  created: 1708705991649
+  size: 6787
+  numEvents: 6
+5IOZTb:
+  sampleName: ZIA-Web-HTTP.log
+  created: 1708706034470
+  size: 10813
+  numEvents: 6
+VsZMEr:
+  sampleName: ZIA-Web.log
+  created: 1708706088538
+  size: 20195
+  numEvents: 11
+lzGmfa:
+  sampleName: ZPA-APP-Connector.log
+  created: 1708707517875
+  size: 11406
+  numEvents: 5
+9jNSMv:
+  sampleName: ZPA-Audit.log
+  created: 1708707565520
+  size: 8119
+  numEvents: 6
+4MFM5p:
+  sampleName: ZPA-Browser-Access.log
+  created: 1708707615204
+  size: 13986
+  numEvents: 5
+5Ao3mM:
+  sampleName: ZPA-User-Activity.log
+  created: 1708707658054
+  size: 19001
+  numEvents: 5
+jEVKFv:
+  sampleName: ZPA-User-Status.log
+  created: 1708707692470
+  size: 12415
+  numEvents: 6
+epwuN1:
+  sampleName: Trellix-EPO-Device.log
+  created: 1708719198203
+  size: 8539
+  numEvents: 4
+nbVXPd:
+  sampleName: Trellix-EPO-Event.log
+  created: 1708719265981
+  size: 6600
+  numEvents: 3
+DugX9Q:
+  sampleName: Trellix-EPO-Group.log
+  created: 1708719310443
+  size: 2873
+  numEvents: 4
+bknpJk:
+  sampleName: Trellix-EDR-Event.log
+  created: 1708719420805
+  size: 24616
+  numEvents: 3
+9sr0ki:
+  sampleName: Trellix-EPO-syslog-XML.log
+  created: 1709067525694
+  size: 2699
+  numEvents: 2

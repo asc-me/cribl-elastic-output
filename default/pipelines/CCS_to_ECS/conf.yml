@@ -1,0 +1,27 @@
+output: default
+streamtags: []
+groups: {}
+asyncFuncTimeout: 1000
+functions:
+  - id: comment
+    filter: "true"
+    disabled: null
+    conf:
+      comment: If __schema exists, parse it and remove everything else
+  - id: eval
+    filter: __schema
+    disabled: null
+    conf:
+      remove:
+        - "*"
+    description: Remove all keys
+  - id: serde
+    filter: __schema
+    disabled: false
+    conf:
+      mode: extract
+      type: json
+      srcField: __schema
+      remove: []
+    description: extract fields mapped to __schema field
+description: if CCS is present on events, convert to top level ECS fields

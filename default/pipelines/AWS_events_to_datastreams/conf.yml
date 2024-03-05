@@ -1,0 +1,355 @@
+output: default
+streamtags: []
+groups:
+  EJdXeL:
+    name: AWS logs to datastreams
+    index: 3
+    description: "Pulled from:
+      https://www.elastic.co/guide/en/kinesis/current/aws-firehose-setup-guide.\
+      html#aws-firehose-config-destination-settings"
+asyncFuncTimeout: 1000
+functions:
+  - id: comment
+    filter: "true"
+    disabled: null
+    conf:
+      comment: >-
+        How to Use This Pipeline:
+
+        this pipeline is designed to work as a reference for you to map your events into the datastreams you have enabled in Elastic. best practice would be to clone this pipeline for each source dataset you plan to map to Elastic datastreams.
+
+
+        if you feel like contributing to the development of this pack and are willing to share whatever pipelines you create and sample data please reach out on the Cribl Community Slack, or check the contributing guide in the README.
+  - id: comment
+    filter: "true"
+    disabled: null
+    conf:
+      comment: "The following is a collection of example mappings of datatypes to
+        Elastic data streams. for more info on how data streams work in Elastic
+        check out here:
+        https://www.elastic.co/blog/an-introduction-to-the-elastic-data-stream-\
+        naming-scheme"
+  - id: comment
+    filter: "true"
+    disabled: null
+    conf:
+      comment: >-
+        What is happening?
+
+        we are mapping three fields to be used for sending data to Elastic.
+
+
+        "__index": this is a Cribl control field, setting this field for Elastic destinations will force an overwrite for the destination index or datastream. if you use this field map sure you have this index or datastream enabled in Elastic.  (this is turned off by default as it's not always clear what the exact name of a datastream is, we recommend using the Cribl integration in Elastic and routing events using the "_dataId" to map to the datastream you want.)
+
+
+        "message": Elastic expects the raw data to be inside the message field, so we remap _raw to message.
+
+
+        "_dataId": this is a control field used in the Elastic integration for Cribl, setting this field will help Elastic map events to the appropriate data stream, this does not need to be the actual datastream name but at least a unique identifier to help map, this could be something like (pan-ngfw-threat).
+  - id: eval
+    filter: _raw.match(/\.cloudfront\./)
+    disabled: null
+    conf:
+      add:
+        - disabled: true
+          name: __index
+          value: '"logs-aws.cloudfront_logs-default"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"aws-cloudfront"'
+        - disabled: false
+          name: "'@timestamp'"
+          value: _time
+      remove:
+        - "*"
+      keep:
+        - message
+        - "@timestamp"
+        - __*
+        - cribl_*
+        - _dataId
+    groupId: EJdXeL
+    description: mappings for Cloudfront
+    final: true
+  - id: eval
+    filter: _raw.match(/\"userIdentity\":\{/)
+    disabled: null
+    conf:
+      add:
+        - disabled: true
+          name: __index
+          value: '"logs-aws.cloudtrail-default"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"aws-cloudtrail"'
+        - disabled: false
+          name: "'@timestamp'"
+          value: _time
+      remove:
+        - "*"
+      keep:
+        - message
+        - "@timestamp"
+        - __*
+        - cribl_*
+        - _dataId
+    description: mappings for Cloudtrail
+    groupId: EJdXeL
+    final: true
+  - id: eval
+    filter: __inputId.endsWith(/cloudwatch/)
+    disabled: null
+    conf:
+      add:
+        - disabled: true
+          name: __index
+          value: '"logs-aws.cloudwatch_logs-default"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"aws-cloudwatch-logs"'
+        - disabled: false
+          name: "'@timestamp'"
+          value: _time
+      remove:
+        - "*"
+      keep:
+        - message
+        - "@timestamp"
+        - __*
+        - cribl_*
+        - _dataId
+    description: mappings for CloudWatch
+    groupId: EJdXeL
+  - id: eval
+    filter: _raw.match(/ip-\d+-\d+-\d+-\d+\s\w+\[?\d*\]?:/)
+    disabled: null
+    conf:
+      add:
+        - disabled: true
+          name: __index
+          value: '"logs-aws.ec2_logs-default"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"aws-ec2"'
+        - disabled: false
+          name: "'@timestamp'"
+          value: _time
+      remove:
+        - "*"
+      keep:
+        - message
+        - "@timestamp"
+        - __*
+        - cribl_*
+        - _dataId
+    description: mappings for EC2
+    groupId: EJdXeL
+    final: true
+  - id: eval
+    filter: __inputId.endsWith("ELB") || __inputId.endsWith("ALB")
+    disabled: null
+    conf:
+      add:
+        - disabled: true
+          name: __index
+          value: '"logs-aws.elb_logs-default"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"aws-elb"'
+        - disabled: false
+          name: "'@timestamp'"
+          value: _time
+      remove:
+        - "*"
+      keep:
+        - message
+        - "@timestamp"
+        - __*
+        - cribl_*
+        - _dataId
+    description: mappings for ELB
+    groupId: EJdXeL
+    final: true
+  - id: eval
+    filter: _raw.match(/\"firewall_name\"/)
+    disabled: null
+    conf:
+      add:
+        - disabled: true
+          name: __index
+          value: '"logs-aws.firewall_logs-default"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"aws-firewall"'
+        - disabled: false
+          name: "'@timestamp'"
+          value: _time
+      remove:
+        - "*"
+      keep:
+        - message
+        - "@timestamp"
+        - __*
+        - cribl_*
+        - _dataId
+    description: mappings for Network Firewall
+    groupId: EJdXeL
+    final: true
+  - id: eval
+    filter: _raw.match(/\s[\w\d\.]+\s\w+\s(NOERROR|NXDOMAIN)\s(TCP|UDP)/)
+    disabled: null
+    conf:
+      add:
+        - disabled: true
+          name: __index
+          value: '"logs-aws.route53_public_logs-default"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"aws-route53-public"'
+        - disabled: false
+          name: "'@timestamp'"
+          value: _time
+      remove:
+        - "*"
+      keep:
+        - message
+        - "@timestamp"
+        - __*
+        - cribl_*
+        - _dataId
+    description: mappings for Route 53 Public DNS
+    groupId: EJdXeL
+    final: true
+  - id: eval
+    filter: _raw.match(/\"region\":\"[\d\w-]+\",\"vpc_id\":\"[\d\w-]+\",\"query_timestamp\"/)
+    disabled: null
+    conf:
+      add:
+        - disabled: true
+          name: __index
+          value: '"logs-aws.route53_resolver_logs-default"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"aws-route53-resolver"'
+        - disabled: false
+          name: "'@timestamp'"
+          value: _time
+      remove:
+        - "*"
+      keep:
+        - message
+        - "@timestamp"
+        - __*
+        - cribl_*
+        - _dataId
+    description: mappings for Route 53 Resolver
+    groupId: EJdXeL
+    final: true
+  - id: eval
+    filter: _raw.match(/AuthHeader\ss3/)
+    disabled: null
+    conf:
+      add:
+        - disabled: true
+          name: __index
+          value: '"logs-aws.s3access-default"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"aws-s3-access"'
+        - disabled: false
+          name: "'@timestamp'"
+          value: _time
+      remove:
+        - "*"
+      keep:
+        - message
+        - "@timestamp"
+        - __*
+        - cribl_*
+        - _dataId
+    description: mappings for S3 Server Access
+    groupId: EJdXeL
+    final: true
+  - id: eval
+    filter: _raw.match(/\seni-[\d\w]+\s\d+\.\d+\.\d+\.\d+\s\d+\.\d+\.\d+\.\d+/)
+    disabled: null
+    conf:
+      add:
+        - disabled: true
+          name: __index
+          value: '"logs-aws.vpcflow-default"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"aws-vpc"'
+        - disabled: false
+          name: "'@timestamp'"
+          value: _time
+      remove:
+        - "*"
+      keep:
+        - message
+        - "@timestamp"
+        - __*
+        - cribl_*
+        - _dataId
+    description: mappings for VPC Flow Logs
+    groupId: EJdXeL
+    final: true
+  - id: eval
+    filter: _raw.match(/arn:aws:waf/)
+    disabled: null
+    conf:
+      add:
+        - disabled: true
+          name: __index
+          value: '"logs-aws.waf-default"'
+        - disabled: false
+          name: message
+          value: _raw
+        - disabled: false
+          name: _dataId
+          value: '"aws-waf"'
+        - disabled: false
+          name: "'@timestamp'"
+          value: _time
+      remove:
+        - "*"
+      keep:
+        - message
+        - "@timestamp"
+        - __*
+        - cribl_*
+        - _dataId
+    description: mappings for WAF
+    groupId: EJdXeL
+    final: true
